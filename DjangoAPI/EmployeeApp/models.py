@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class Departments(models.Model):
     DepartmentId = models.AutoField(primary_key=True)
     DepartmentName = models.CharField(max_length=500)
@@ -12,6 +10,9 @@ class Employees(models.Model):
     Department = models.CharField(max_length=500)
     DateOfJoining = models.DateField()
     PhotoFileName = models.CharField(max_length=500)
+    Role=models.CharField(max_length=500)
+    Manager=models.CharField(max_length=500,default="Unknown")
+    ProjectId = models.BigIntegerField()
 
 class Users(models.Model):
     UserId = models.AutoField(primary_key=True)
@@ -24,3 +25,24 @@ class Users(models.Model):
     phoneNumber=models.BigIntegerField()
     status=models.CharField(max_length=500)
 
+class LeaveRequest(models.Model):
+    LeaveId=models.AutoField(primary_key=True)
+    EmployeeName=models.CharField(max_length=500)
+    LeaveDate = models.DateField()
+    Reason=models.CharField(max_length=500)
+    Status=models.CharField(max_length=500)
+    ReportingManager=models.CharField(max_length=500)
+
+
+class Attendance(models.Model):
+    AttendanceId = models.AutoField(primary_key=True)
+    Status=models.CharField(max_length=500)
+
+class Projects(models.Model):
+    ProjectId=models.AutoField(primary_key=True)
+    ProjectName=models.CharField(max_length=500)
+    ReportingManager=models.CharField(max_length=500)
+    Origin=models.CharField(max_length=500)
+    StartedDate = models.DateField()
+    Requirements=models.CharField(max_length=500)
+    WorkingEmployeeIds = models.JSONField(default=list)
