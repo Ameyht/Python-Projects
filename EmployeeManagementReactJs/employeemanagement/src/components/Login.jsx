@@ -29,18 +29,18 @@ const Login = () => {
   return (
     <Box className="flex">
       <Box
-        className="h-auto hidden md:flex w-[55%] justify-end border border-orange-600"
+        className="h-auto hidden md:flex w-[55%] justify-end"
         // style={{
         //   display: "flex",
         //   justifyContent: "end",
         // }}
       >
-        <img src={LoginImage} className="size-10/12 border border-black" alt="" />
+        <img src={LoginImage} className="h-[28rem] size-10/12" alt="" />
       </Box>
       <Box className="flex justify-center items-center  w-[100%] md:w-[45%] ">
         <Paper
           style={{
-            boxShadow: "2px 3px 2px gray",
+            boxShadow: "6px 6px 5px gray",
           }}
           className=" h-auto w-[60%] flex items-center border border-gray-500"
         >
@@ -74,7 +74,7 @@ const Login = () => {
               style={{
                 width: "100%",
               }}
-              className="text-sm "
+              className="text-sm py-2"
             >
               Password
             </label>
@@ -91,19 +91,19 @@ const Login = () => {
               variant="outlined"
               required
             />
-            <Link to="/forgotpassword" className="text-sm">
+            <Link to="/forgotpassword" className="text-sm py-2">
               Forgot Password ?
             </Link>
             <Button
               type="submit"
               className="my-2 "
-              style={{ backgroundColor: "#461b93" }}
+              style={{ backgroundColor: "#BF2EF0" }}
               variant="contained"
               // href="/"
             >
               Login
             </Button>
-            <Box className="self-center text-sm">
+            <Box className="self-center text-sm py-2">
               {" "}
               New user <a href="/signup">Sign Up</a>
             </Box>

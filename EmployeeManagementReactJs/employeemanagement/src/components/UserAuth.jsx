@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Login from "./Login";
-import Footer from "./Footer";
 import { useLocation } from "react-router-dom";
 import SignUp from "./SignUp";
 
@@ -34,7 +33,6 @@ const UserAuth = () => {
     <Box className="md:min-h-16 min-h-16 h-auto md:h-auto" style={myStyles}>
       <Header />
       {renderContent()}
-      <Footer />
     </Box>
   );
 };
