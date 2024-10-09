@@ -33,7 +33,8 @@ const myStyles = {
     <Box className="flex justify-around w-40 h-11 items-center mr-2 py-0 ">
     <Tooltip title={`${name}, ${rl}`} variant="plain">
     <Avatar
-        sx={{ bgcolor: deepOrange[500] ,maxWidth: '50px',fontSize: '1.00rem',height:"35px",width:"35px"
+        sx={{ background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(51,0,125,1) 0%, rgba(0,116,148,1) 100%);" 
+          ,maxWidth: '50px',fontSize: '1.00rem',height:"40px",width:"40px" ,
          }}
         alt="Remy Sharp"
         src="/broken-image.jpg"
@@ -41,7 +42,7 @@ const myStyles = {
       AB
       </Avatar>
       </Tooltip>
-      <Box className="btngrp flex flex-row">
+      <Box className="btngrp flex flex-row ml-1.5">
         <Button
           class="btn-sm dropdown-toggle"
           type="button"

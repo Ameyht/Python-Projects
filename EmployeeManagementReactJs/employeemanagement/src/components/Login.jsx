@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <Box className="flex">
       <Box
-        className="h-auto hidden md:flex w-[55%] justify-end"
+        className="h-auto hidden md:flex w-[55%] mt-5 justify-end"
         // style={{
         //   display: "flex",
         //   justifyContent: "end",
@@ -97,7 +97,7 @@ const Login = () => {
             <Button
               type="submit"
               className="my-2 "
-              style={{ backgroundColor: "#BF2EF0" }}
+              style={{ backgroundColor: "#227B94" }}
               variant="contained"
               // href="/"
             >
