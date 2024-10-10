@@ -14,7 +14,7 @@ const SignUp = () => {
     PhotoFileName: "",
     Role: "",
     Manager: "",
-    ProjectId:""
+    ProjectId:0
   });
 
   const addUser = useUserStore((state) => state.addUser);
@@ -45,6 +45,7 @@ const SignUp = () => {
         PhotoFileName: "",
         Role: "",
         Manager: "",
+        ProjectId:0
       });
 
       toast.success("User registered successfully!", {
@@ -173,13 +174,14 @@ const SignUp = () => {
             <Typography variant="h6">Sign up as a new Employee</Typography>
             <Typography style={{ color: "gray", fontSize: "1rem" }}>
               or already registered?{" "}
-              <Link className="text-white-800" to="/login">
+              <Link className="text-blue-800" to="/login">
                 Login Now
               </Link>
             </Typography>
             <TextField
               fullWidth
               name="EmployeeName"
+              sx={{mt:1}}
               placeholder="Employee Name"
               value={formData.EmployeeName}
               onChange={handleChange}
@@ -191,6 +193,7 @@ const SignUp = () => {
               fullWidth
               name="Department"
               placeholder="Department"
+              sx={{mt:1}}
               value={formData.Department}
               onChange={handleChange}
               size="small"
@@ -200,6 +203,7 @@ const SignUp = () => {
             <TextField
               fullWidth
               name="DateOfJoining"
+              sx={{mt:1}}
               placeholder="Date of Joining (YYYY-MM-DD)"
               value={formData.DateOfJoining}
               onChange={handleChange}
@@ -210,6 +214,7 @@ const SignUp = () => {
             <TextField
               fullWidth
               name="PhotoFileName"
+              sx={{mt:1}}
               placeholder="Photo File Name"
               value={formData.PhotoFileName}
               onChange={handleChange}
@@ -220,6 +225,7 @@ const SignUp = () => {
             <TextField
               fullWidth
               name="Role"
+              sx={{mt:1}}
               placeholder="Role"
               value={formData.Role}
               onChange={handleChange}
@@ -230,6 +236,7 @@ const SignUp = () => {
             <TextField
               fullWidth
               name="Manager"
+              sx={{mt:1}}
               placeholder="Manager"
               value={formData.Manager}
               onChange={handleChange}
