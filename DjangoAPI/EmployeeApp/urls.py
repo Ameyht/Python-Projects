@@ -9,6 +9,8 @@ urlpatterns=[
     path('employee/<int:id>',views.employeeApi),
     path('employee/<username>',views.employeeApi),
 
+    path('login',views.employeeLogin),
+
     path('user',views.userApi),
     path('user/<int:id>',views.userApi),
     path('user/<username>',views.userApi),
