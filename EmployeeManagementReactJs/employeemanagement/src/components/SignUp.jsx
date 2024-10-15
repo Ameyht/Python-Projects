@@ -1,20 +1,20 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import React, { useState } from "react";
-import SignUpImage from "../images/register.png";
+import SignUpImage from "../images/register2.webp";
 import { Link } from "react-router-dom";
 import useUserStore from "./employeeStore";
+import axios from "axios";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    role: "",
-    status: "",
-    password: "",
-    confirmPassword: "",
+    EmployeeName: "",
+    Department: "",
+    DateOfJoining: "",
+    PhotoFileName: "",
+    Role: "",
+    Manager: "",
+    ProjectId:0
   });
 
   const addUser = useUserStore((state) => state.addUser);
@@ -27,74 +27,163 @@ const SignUp = () => {
     }));
   };
 
-  const handleRegister = (userData) => {
-    addUser(userData);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      role: "",
-      status: "",
-      password: "",
-      confirmPassword: "",
-    });
+  const handleRegister = async (userData) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/dept/employee", userData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer YOUR_TOKEN_HERE",
+        },
+      });
 
-    toast.success("User registered successfully!", {
-      position: "top-right",
-    });
+      addUser(response.data);
+
+      setFormData({
+        EmployeeName: "",
+        Department: "",
+        DateOfJoining: "",
+        PhotoFileName: "",
+        Role: "",
+        Manager: "",
+        ProjectId:0
+      });
+
+      toast.success("User registered successfully!", {
+        position: "top-right",
+      });
+    } catch (error) {
+      toast.error("Failed to register user. Please try again.", {
+        position: "top-right",
+      });
+      console.error("Error during registration:", error);
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    const user = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      role: formData.role,
-      status: formData.status,
-      password: formData.password,
-    };
-
-    handleRegister(user);
+    handleRegister(formData);
   };
 
   return (
+    // <Box className="flex h-auto">
+    //   <Box
+    //     className="h-auto hidden md:flex w-[55%] mt-[3rem] justify-end"
+    //   >
+    //     <img src={SignUpImage} alt="" className="h-[23rem] size-9/12 my-6" />
+    //   </Box>
+    //   <Box className="flex justify-center items-center mt-[3rem] w-[100%] md:w-[45%]" >
+    //     <Paper className=" h-auto w-[60%] flex items-center border border-gray-300" style={{
+    //         boxShadow: "6px 6px 5px gray",
+    //       }}>
+    //       <form className="flex flex-col p-4 w-[100%] " onSubmit={handleSubmit}>
+    //         {" "}
+    //         <Typography variant="h6">Sign up as a new Employee </Typography>
+    //         <Typography style={{ color: "gray", fontSize: "1rem" }}>
+    //           or already registered ?{" "}
+    //           <Link className="text-white-800" to="/login">
+    //             {" "}
+    //             Login Now
+    //           </Link>
+    //         </Typography>
+    //         <TextField
+    //           fullWidth
+    //           id="first_name"
+    //           className="w-[90%] mx-0 my-8 md:w-[60%]"
+    //           sx={{ my:0.5 }}
+    //           placeholder="First Name"
+    //           name="firstName"
+    //           onChange={handleChange}
+    //           size="small"
+    //           variant="outlined"
+    //           required
+    //         />
+    //         <TextField
+    //           fullWidth
+    //           id="last_name"
+    //           className="w-[90%] mx-0 md:w-[60%]"
+    //           sx={{ my:0.5 }}
+    //           placeholder="Last Name"
+    //           name="lastName"
+    //           onChange={handleChange}
+    //           // value={formData.firstName}
+    //           size="small"
+    //           variant="outlined"
+    //           required
+    //         />
+    //         <TextField
+    //           fullWidth
+    //           id="email"
+    //           className="w-[90%] mx-0 my-1 md:w-[60%]"
+    //           sx={{ my:0.5 }}
+    //           placeholder="Email"
+    //           name="email"
+    //           onChange={handleChange}
+    //           size="small"
+    //           variant="outlined"
+    //           required
+    //         />
+    //         <TextField
+    //           fullWidth
+    //           id="password"
+    //           className="w-[90%] mx-0 my-1 md:w-[60%]"
+    //           sx={{ my:0.5 }}
+    //           placeholder="Password"
+    //           name="password"
+    //           onChange={handleChange}
+    //           // value={formData.firstName}
+    //           size="small"
+    //           variant="outlined"
+    //           required
+    //         />
+    //         <TextField
+    //           fullWidth
+    //           id="confirm_password"
+    //           className="w-[90%] mx-0 my-1 md:w-[60%]"
+    //           sx={{ my:0.5 }}
+    //           placeholder="Confirm Password"
+    //           name="confirmPassword"
+    //           onChange={handleChange}
+    //           size="small"
+    //           variant="outlined"
+    //           required
+    //         />
+    //         <Button
+    //           type="submit"
+    //           sx={{mt:1}}
+    //           style={{ backgroundColor: "#006BFF" }}
+    //           variant="contained"
+    //         >
+    //           Register Now
+    //         </Button>
+    //       </form>
+    //     </Paper>
+    //   </Box>
+    // </Box>
     <Box className="flex h-auto">
-      <Box
-        className="h-auto hidden md:flex w-[55%] justify-end"
-        // style={{
-        //   display: "flex",
-        //   justifyContent: "end",
-        // }}
-      >
-        <img src={SignUpImage} alt="" className=" my-6" />
+      <Box className="h-auto hidden md:flex w-[55%] mt-[3rem] justify-end">
+        <img src={SignUpImage} alt="Sign Up" className="h-[23rem] size-9/12 my-6" />
       </Box>
-      <Box className="flex justify-center items-center  w-[100%] md:w-[45%] ">
-        <Paper className=" h-auto w-[60%] flex items-center ">
-          <form className="flex flex-col p-4 w-[100%] " onSubmit={handleSubmit}>
-            {" "}
-            <Typography variant="h6">Sign up as a new User </Typography>
+      <Box className="flex justify-center items-center mt-[3rem] w-[100%] md:w-[45%]">
+        <Paper
+          className="h-auto w-[60%] flex items-center border border-gray-300"
+          style={{
+            boxShadow: "6px 6px 5px gray",
+          }}
+        >
+          <form className="flex flex-col p-4 w-[100%]" onSubmit={handleSubmit}>
+            <Typography variant="h6">Sign up as a new Employee</Typography>
             <Typography style={{ color: "gray", fontSize: "1rem" }}>
-              or already registered ?{" "}
-              <Link className="text-violet-800" to="/login">
-                {" "}
+              or already registered?{" "}
+              <Link className="text-blue-800" to="/login">
                 Login Now
               </Link>
             </Typography>
             <TextField
               fullWidth
-              id="first_name"
-              className="w-[90%] mx-0 my-1 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="First Name"
-              name="firstName"
+              name="EmployeeName"
+              sx={{mt:1}}
+              placeholder="Employee Name"
+              value={formData.EmployeeName}
               onChange={handleChange}
               size="small"
               variant="outlined"
@@ -102,24 +191,10 @@ const SignUp = () => {
             />
             <TextField
               fullWidth
-              id="last_name"
-              className="w-[90%] mx-0 my-1 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="Last Name"
-              name="lastName"
-              onChange={handleChange}
-              // value={formData.firstName}
-              size="small"
-              variant="outlined"
-              required
-            />
-            <TextField
-              fullWidth
-              id="email"
-              className="w-[90%] mx-0 my-1 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="Email"
-              name="email"
+              name="Department"
+              placeholder="Department"
+              sx={{mt:1}}
+              value={formData.Department}
               onChange={handleChange}
               size="small"
               variant="outlined"
@@ -127,24 +202,43 @@ const SignUp = () => {
             />
             <TextField
               fullWidth
-              id="password"
-              className="w-[90%] mx-0 my-1 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="Password"
-              name="password"
+              name="DateOfJoining"
+              sx={{mt:1}}
+              placeholder="Date of Joining (YYYY-MM-DD)"
+              value={formData.DateOfJoining}
               onChange={handleChange}
-              // value={formData.firstName}
               size="small"
               variant="outlined"
               required
             />
             <TextField
               fullWidth
-              id="confirm_password"
-              className="w-[90%] mx-0 my-1 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="Confirm Password"
-              name="confirmPassword"
+              name="PhotoFileName"
+              sx={{mt:1}}
+              placeholder="Photo File Name"
+              value={formData.PhotoFileName}
+              onChange={handleChange}
+              size="small"
+              variant="outlined"
+              required
+            />
+            <TextField
+              fullWidth
+              name="Role"
+              sx={{mt:1}}
+              placeholder="Role"
+              value={formData.Role}
+              onChange={handleChange}
+              size="small"
+              variant="outlined"
+              required
+            />
+            <TextField
+              fullWidth
+              name="Manager"
+              sx={{mt:1}}
+              placeholder="Manager"
+              value={formData.Manager}
               onChange={handleChange}
               size="small"
               variant="outlined"
@@ -152,8 +246,8 @@ const SignUp = () => {
             />
             <Button
               type="submit"
-              className="my-2 "
-              style={{ backgroundColor: "#461b93" }}
+              sx={{ mt: 1 }}
+              style={{ backgroundColor: "#006BFF" }}
               variant="contained"
             >
               Register Now

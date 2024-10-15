@@ -9,10 +9,11 @@ class Employees(models.Model):
     EmployeeName = models.CharField(max_length=500)
     Department = models.CharField(max_length=500)
     DateOfJoining = models.DateField()
-    PhotoFileName = models.CharField(max_length=500)
     Role=models.CharField(max_length=500)
     Manager=models.CharField(max_length=500,default="Unknown")
     ProjectId = models.BigIntegerField()
+    Email=models.CharField(max_length=500)
+    Password = models.CharField(max_length=500)
 
 class Users(models.Model):
     UserId = models.AutoField(primary_key=True)

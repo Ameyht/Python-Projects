@@ -67,8 +67,8 @@ def employeeApi(request,id=0,username="undefined"):
         employee=JSONParser().parse(request)
         employees_serializer=EmployeeSerializer(data=employee)
         if employees_serializer.is_valid():
-            employees_serializer.save()
-            return JsonResponse("Employee Added Successfully",safe=False)
+            employee_saved= employees_serializer.save()
+            return JsonResponse(employees_serializer.data,safe=False)
         return JsonResponse("Failed to Add Employee",safe=False)
     elif request.method == 'PUT':
         try:
@@ -99,6 +99,14 @@ def employeeApi(request,id=0,username="undefined"):
         employee=Employees.objects.get(EmployeeId=id)
         employee.delete()
         return JsonResponse("Employee Deleted Successfully",safe=False)
+
+@check_jwt_token
+@csrf_exempt
+def employeeLogin(request):
+    if request.method == 'POST':
+        employee_cred=JSONParser().parse(request)
+        employee=Employees.objects.get(Email=employee_cred.Email)     
+        print("employee cred : ",employee)
 
 @check_jwt_token
 @csrf_exempt
