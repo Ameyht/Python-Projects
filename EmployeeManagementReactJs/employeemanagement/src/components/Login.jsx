@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import LoginImage from "../images/login.avif";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "./employeeStore";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const users = useUserStore((state) => state.users);
@@ -11,29 +12,63 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
 
-    if (user) {
-      const editUrl = "/home/user?id=" + Number(user.id);
-      alert("Logged in Successfully");
-      navigate(editUrl);
-    } else {
-      alert("Invalid email or password");
+  const addUser = useUserStore((state) => state.addUser);
+
+  const resetinputs=()=>{
+    setEmail("");
+    setPassword("");
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const loginData = {
+      Email: email,
+      Password: password,
+    };
+    console.log("loginData => ",JSON.stringify(loginData));
+    try {
+      const response = await fetch("http://127.0.0.1:8000/dept/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTcyOTA2Nzg2NX0.JrYaBXhvo3yZzjas2DXzK2R0Wf50gDxN-Re5J2Ax1ME", // Add your token here
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        addUser(response.data.employee);
+        toast.success("Employee Login successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        resetinputs()
+        const editUrl = "/home/user?id=" + data?.employee?.EmployeeId; 
+        navigate(editUrl);   
+      } else {
+        toast.error("Invalid email and password.", {
+          position: "top-right",
+          autoClose:3000,
+        });
+        resetinputs()
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred during login. Please try again.");
     }
+    
   };
 
-  return (
+  return (<>
+         <ToastContainer />
     <Box className="flex">
       <Box
         className="h-auto hidden md:flex w-[55%] mt-5 justify-end"
-        // style={{
-        //   display: "flex",
-        //   justifyContent: "end",
-        // }}
       >
         <img src={LoginImage} className="h-[28rem] size-10/12" alt="" />
       </Box>
@@ -54,20 +89,19 @@ const Login = () => {
               }}
               className="text-sm py-2"
             >
-              Email Id / UserName
+              Email Id
             </label>
             <TextField
               fullWidth
               id="email"
-              className="w-[90%] mx-0  md:w-[60%]"
-              onChange={(e) => setEmail(e.target.value)}
-              // sx={{ width: "60%" }}
-              placeholder="Email/UserName"
-              name="email"
-              // value={formData.firstName}
-              size="small"
-              variant="outlined"
-              required
+                className="w-[90%] mx-0  md:w-[60%]"
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email/UserName"
+                name="email"
+                size="small"
+                variant="outlined"
+                required
             />
             <label
               htmlFor="email"
@@ -81,15 +115,14 @@ const Login = () => {
             <TextField
               fullWidth
               id="password"
-              className="w-[90%] mx-0 my-2 md:w-[60%]"
-              // sx={{ width: "60%" }}
-              placeholder="Password"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              // value={formData.firstName}
-              size="small"
-              variant="outlined"
-              required
+                className="w-[90%] mx-0 my-2 md:w-[60%]"
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                name="password"
+                size="small"
+                variant="outlined"
+                required
             />
             <Link to="/forgotpassword" className="text-sm py-2">
               Forgot Password ?
@@ -111,6 +144,7 @@ const Login = () => {
         </Paper>
       </Box>
     </Box>
+    </>
   );
 };
 

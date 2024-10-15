@@ -28,7 +28,7 @@ const userStore = (set, get) => ({
   getUserById: (id) => {
     const users = get().users;
 
-    return users.find((user) => user.id === id);
+    return users.find((user) => user.EmployeeId === id);
   },
 });
 
