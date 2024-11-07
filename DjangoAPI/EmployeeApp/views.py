@@ -112,9 +112,13 @@ def employeeLogin(request):
 
         if employee:
             employees_serializer=EmployeeSerializer(employee)
-            employee.Password=password
-            return JsonResponse({"message": "Login successful","employee": employees_serializer.data}, safe=False)
-        return JsonResponse({"message": "Invalid credentials"}, safe=False)
+            if employee.Password==password:
+                return JsonResponse({"message": "Login successful","employee": employees_serializer.data}, safe=False)
+            return JsonResponse(
+            {"message": "Invalid credentials"}, 
+            status=401, 
+            safe=False
+        )
       
 
 @check_jwt_token
