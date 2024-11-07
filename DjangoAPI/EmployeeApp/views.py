@@ -105,8 +105,17 @@ def employeeApi(request,id=0,username="undefined"):
 def employeeLogin(request):
     if request.method == 'POST':
         employee_cred=JSONParser().parse(request)
-        employee=Employees.objects.get(Email=employee_cred.Email)     
-        print("employee cred : ",employee)
+        email = employee_cred.get('Email')
+        password = employee_cred.get('Password')
+        
+        employee = Employees.objects.filter(Email=email).first()
+
+        if employee:
+            employees_serializer=EmployeeSerializer(employee)
+            employee.Password=password
+            return JsonResponse({"message": "Login successful","employee": employees_serializer.data}, safe=False)
+        return JsonResponse({"message": "Invalid credentials"}, safe=False)
+      
 
 @check_jwt_token
 @csrf_exempt
