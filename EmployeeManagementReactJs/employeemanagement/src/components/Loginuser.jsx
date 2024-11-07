@@ -2,9 +2,9 @@ import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
-import { deepOrange } from '@mui/material/colors';
 import Tooltip from '@mui/joy/Tooltip';
 import { Link } from "react-router-dom";
+import useUserStore from "./employeeStore"; 
 
 const LoginUser = () => {
   const [id, setId] = useState();
@@ -18,12 +18,12 @@ const LoginUser = () => {
     console.log("id:", id);
   }, [location.search]);
 
-  const user=0
-//   const user = useUserStore((state) => state.getUserById(id));
-  console.log("user after login =>", user);
+  const employee = useUserStore((state) => state.getUserById(id));
+  console.log("user after login =>", employee);
 
-const name="ASB";
-const rl="Manager";
+const EmployeeName=employee?.EmployeeName;
+const EmployeeLabel = EmployeeName?.slice(0, 2);  
+const role=employee?.Role
 
 const myStyles = {
     fontFamily: "'Oswald', sans-serif", 
@@ -31,7 +31,7 @@ const myStyles = {
 
   return (
     <Box className="flex justify-around w-40 h-11 items-center mr-2 py-0 ">
-    <Tooltip title={`${name}, ${rl}`} variant="plain">
+    <Tooltip title={`${EmployeeName}, ${role}`} variant="plain">
     <Avatar
         sx={{ background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(51,0,125,1) 0%, rgba(0,116,148,1) 100%);" 
           ,maxWidth: '50px',fontSize: '1.00rem',height:"40px",width:"40px" ,
@@ -39,7 +39,7 @@ const myStyles = {
         alt="Remy Sharp"
         src="/broken-image.jpg"
         >
-      AB
+      {EmployeeLabel}
       </Avatar>
       </Tooltip>
       <Box className="btngrp flex flex-row ml-1.5">
