@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { Box } from "@mui/material";
 import empmanage from "../images/empmanagelogo.png"
+import workleave from "../images/workleave.png" 
+import project from "../images/project.png"
 
 const Sidebar = () => {
   const [side, setSide] = useState(false);
@@ -11,7 +13,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Box className="hidden md:flex flex-col items-center bg-white border border-white-300 md:min-h-[30rem] min-h-16 h-auto md:h-[100%] w-full md:w-[16%]">
+    <Box className="hidden md:flex flex-col items-center bg-white md:min-h-[30rem] min-h-16 h-auto md:h-[100%] w-full md:w-[16%]">
     
       <Box className="hidden md:flex flex-col mt-1 text-[18px] md:w-full truncate ">
         <h1 className="py-2 my-1 px-3 text-[14px] text-black-600 uppercase">
@@ -41,7 +43,7 @@ const Sidebar = () => {
               Dashboard
             </a>
           </Box>
-          <Box className="group flex items-center h-10 rounded-br-full hover:bg-orange-400 transition-all duration-300">
+          <Box className="mt-2 group flex items-center h-10 rounded-br-full hover:bg-orange-400 transition-all duration-300">
             <span className="w-2 h-[100%] mr-2 group-hover:bg-orange-700"></span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,6 +64,26 @@ const Sidebar = () => {
               className="text-[16px] px-2 overflow-hidden whitespace-nowrap"
             >
               Employees
+            </a>
+          </Box>
+          <Box className="mt-2 group flex items-center h-10 rounded-br-full hover:bg-orange-400 transition-all duration-300">
+            <span className="w-2 h-[100%] mr-2 group-hover:bg-orange-700"></span>
+            <img src={workleave} alt="" style={{height:25}} /> 
+            <a
+              href="/"
+              className="text-[16px] px-2 overflow-hidden whitespace-nowrap"
+            >
+              Leave Management
+            </a>
+          </Box>
+          <Box className="mt-2 group flex items-center h-10 rounded-br-full hover:bg-orange-400 transition-all duration-300">
+            <span className="w-2 h-[100%] mr-2 group-hover:bg-orange-700"></span>
+            <img src={project} alt="" style={{height:25}} /> 
+            <a
+              href="/"
+              className="text-[16px] px-2 overflow-hidden whitespace-nowrap"
+            >
+              Projects
             </a>
           </Box>
         </Box>

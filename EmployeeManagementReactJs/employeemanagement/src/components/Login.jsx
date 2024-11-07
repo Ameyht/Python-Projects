@@ -12,7 +12,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-
   const addUser = useUserStore((state) => state.addUser);
 
   const resetinputs=()=>{
@@ -34,14 +33,15 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTcyOTA2Nzg2NX0.JrYaBXhvo3yZzjas2DXzK2R0Wf50gDxN-Re5J2Ax1ME", // Add your token here
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTczMTA0NjgxMX0.6h5cpJRua7ERvJY-HIlJ6OdXsKwE1pHgF4nOTLYltwY",
         },
         body: JSON.stringify(loginData),
       });
 
       if (response.ok) {
         const data = await response.json();
-        addUser(response.data.employee);
+        console.log("inside response.ok",JSON.stringify(data.employee));
+        addUser(data.employee);
         toast.success("Employee Login successfully!", {
           position: "top-right",
           autoClose: 3000,

@@ -27,8 +27,16 @@ const userStore = (set, get) => ({
   },
   getUserById: (id) => {
     const users = get().users;
-
     return users.find((user) => user.EmployeeId === id);
+  },
+  getUser: () => {
+    const users = get().users;
+    return users.length > 0 ? users[0] : null;;
+  },
+  clearUser: () => {
+    set(() => ({
+      users: [],
+    }));
   },
 });
 

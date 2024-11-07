@@ -36,7 +36,6 @@ const SignUp = () => {
         },
       });
 
-
       setFormData({
         EmployeeName: "",
         Department: "",
