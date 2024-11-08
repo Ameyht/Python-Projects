@@ -4,6 +4,7 @@ import LoginImage from "../images/login.avif";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "./employeeStore";
 import { ToastContainer, toast } from "react-toastify";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const Login = () => {
   const users = useUserStore((state) => state.users);
@@ -32,8 +33,7 @@ const Login = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTczMTA0NjgxMX0.6h5cpJRua7ERvJY-HIlJ6OdXsKwE1pHgF4nOTLYltwY",
+          Authorization: `${BEARER_TOKEN}`,
         },
         body: JSON.stringify(loginData),
       });

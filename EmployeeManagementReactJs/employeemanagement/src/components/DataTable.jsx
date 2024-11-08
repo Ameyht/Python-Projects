@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const style = {
   position: "absolute",
@@ -38,7 +39,8 @@ export default function DataTable({ user }) {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/dept/employee/${LoginEmployee?.EmployeeName}`, {
           headers: {
-            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTczMTA0NjgxMX0.6h5cpJRua7ERvJY-HIlJ6OdXsKwE1pHgF4nOTLYltwY'
+            "Content-Type": "application/json",
+            Authorization: `${BEARER_TOKEN}`,
           }
         });
         //Note: below i have mapped the EmployeeId to id as DataGrid needs a unique id for every Object to render the data
