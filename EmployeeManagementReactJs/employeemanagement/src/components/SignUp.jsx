@@ -5,6 +5,7 @@ import SignUpImage from "../images/register2.webp";
 import { Link } from "react-router-dom";
 import useUserStore from "./employeeStore";
 import axios from "axios";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -32,10 +33,9 @@ const SignUp = () => {
       const response = await axios.post("http://127.0.0.1:8000/dept/employee", userData, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTcyOTA2Nzg2NX0.JrYaBXhvo3yZzjas2DXzK2R0Wf50gDxN-Re5J2Ax1ME",
+          Authorization: `${BEARER_TOKEN}`,
         },
       });
-
 
       setFormData({
         EmployeeName: "",

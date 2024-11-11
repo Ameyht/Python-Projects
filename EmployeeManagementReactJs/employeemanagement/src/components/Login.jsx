@@ -4,6 +4,7 @@ import LoginImage from "../images/login.avif";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "./employeeStore";
 import { ToastContainer, toast } from "react-toastify";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const Login = () => {
   const users = useUserStore((state) => state.users);
@@ -11,7 +12,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
 
   const addUser = useUserStore((state) => state.addUser);
 
@@ -33,15 +33,15 @@ const Login = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVc2VySWQiOiIyIiwidXNlcm5hbWUiOiJBbWV5YjAwMSIsImV4cCI6MTcyOTA2Nzg2NX0.JrYaBXhvo3yZzjas2DXzK2R0Wf50gDxN-Re5J2Ax1ME", // Add your token here
+          Authorization: `${BEARER_TOKEN}`,
         },
         body: JSON.stringify(loginData),
       });
 
       if (response.ok) {
         const data = await response.json();
-        addUser(response.data.employee);
+        console.log("inside response.ok",JSON.stringify(data.employee));
+        addUser(data.employee);
         toast.success("Employee Login successfully!", {
           position: "top-right",
           autoClose: 3000,
