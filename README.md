@@ -50,7 +50,6 @@
    ```bash
    python3 manage.py startapp EmployeeApApp
    ```
-  OR 
    ```bash
    python3 manage.py runserver
    ```
