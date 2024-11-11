@@ -181,6 +181,7 @@ def userApi(request,id=0,username="undefined"):
         except Exception as e:
             return JsonResponse({"message":str(e)},safe=False)
 
+@check_jwt_token
 @csrf_exempt
 def LeaveApi(request,id=0,username="undefined"):
     try:
