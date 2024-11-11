@@ -14,7 +14,7 @@
    ```
    
    - Make sure you have Python installed on your local machine.
-   - 
+  
 2. Navigate to the project's root directory:
 
    ```bash
