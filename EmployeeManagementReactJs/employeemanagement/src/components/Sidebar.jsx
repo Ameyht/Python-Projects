@@ -14,7 +14,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Box className="hidden md:flex flex-col items-center bg-white md:min-h-[30rem] min-h-16 h-auto md:h-[100%] w-full md:w-[16%]">
+    <Box className="hidden md:flex flex-col items-center bg-white md:min-h-[33rem] min-h-16 h-auto md:h-[100%] w-full md:w-[16%]">
     
       <Box className="hidden md:flex flex-col mt-1 text-[18px] md:w-full truncate ">
         <h1 className="py-2 my-1 px-3 text-[14px] text-black-600 uppercase">

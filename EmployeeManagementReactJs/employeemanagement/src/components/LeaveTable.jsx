@@ -7,7 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box } from '@mui/material';
+import { Box, Select, MenuItem, FormControl} from '@mui/material';
+import axios from 'axios';
+import useUserStore from "./employeeStore";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,58 +32,105 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name,
-  calories,
-  fat,
-  carbs,
-  days,
-  protein,
-) {
-  return { name, calories, fat, carbs,days, protein };
-}
-
-const rows = [
-  createData('Bob', 'Paternity Leave', "2024-05-02", "Visit HomeTown",2, 4.0),
-  createData('Michael', 'Sick Leave', "2024-06-14", "Not Feeling Well", 1,4.3),
-  createData('John','Annual Leave', "2024-06-19", "Trip Plan",1, 6.0),
-  createData('Bobby','Paternity Leave', "2024-08-03", "Document Corrections",1, 4.3),
-  createData('Tommy', 'Sick Leave', "2024-08-03", "Not Feeling Well", 1,3.9),
-];
-
 export default function CustomizedTables() {
+  const [rows, setRows] = React.useState([]);
+  const [employee, setEmployee] = React.useState(null);
+
+  const getUser = useUserStore((state) => state.getUser);
+
+  React.useEffect(() => {
+    const fetchedEmployee = getUser();
+    setEmployee(fetchedEmployee);
+    console.log("DashBoardMain:", fetchedEmployee);
+  }, [getUser]);
+
+
+  React.useEffect(() => {
+    const fetchLeaveRequests = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/dept/leave', {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${BEARER_TOKEN}`,
+            EmployeeId: employee.EmployeeId, 
+          },
+        });
+        console.log("fetched leaves =>",JSON.stringify(response.data));
+        setRows(response.data);
+      } catch (error) {
+        console.error("Error fetching leave requests:", error);
+      }
+    };
+
+    fetchLeaveRequests();
+  }, [employee]);
+
+  const handleStatusChange = async (leaveId, newStatus) => {
+    try {
+      const updatedLeaveRequest = {
+        LeaveId: leaveId,
+        EmployeeName: rows.find(row => row.LeaveId === leaveId)?.EmployeeName,
+        LeaveDate: rows.find(row => row.LeaveId === leaveId)?.LeaveDate,
+        Reason: rows.find(row => row.LeaveId === leaveId)?.Reason,
+        Status: newStatus,
+        ReportingManager: employee.EmployeeName,  
+      };
+
+      const response = await axios.put('http://127.0.0.1:8000/dept/leave', updatedLeaveRequest, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${BEARER_TOKEN}`,
+          EmployeeId: employee.EmployeeId,
+        },
+      });
+      console.log("Leave request updated =>", response.data);
+
+      setRows((prevRows) => 
+        prevRows.map((row) =>
+          row.LeaveId === leaveId ? { ...row, Status: newStatus } : row
+        )
+      );
+    } catch (error) {
+      console.error("Error updating leave request:", error);
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
+          <StyledTableCell>Leave Id</StyledTableCell>
             <StyledTableCell>Employee Name</StyledTableCell>
-            <StyledTableCell >Leave Type</StyledTableCell>
             <StyledTableCell >LeaveDate&nbsp;</StyledTableCell>
-            <StyledTableCell >LeaveReason&nbsp;</StyledTableCell>
+            <StyledTableCell >Leave Reason&nbsp;</StyledTableCell>
             <StyledTableCell >Days&nbsp;</StyledTableCell>
             <StyledTableCell >Status&nbsp;</StyledTableCell>
-            <StyledTableCell >Action&nbsp;</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={row.leaveId}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {row.LeaveId}
               </StyledTableCell>
-              <StyledTableCell >{row.calories}</StyledTableCell>
-              <StyledTableCell >{row.fat}</StyledTableCell>
-              <StyledTableCell >{row.carbs}</StyledTableCell>
-              <StyledTableCell >{row.days}</StyledTableCell>
-              <StyledTableCell >{row.protein}</StyledTableCell>
-              <StyledTableCell >
-                <Box className="flex w-20 justify-around">
-                {/* edit svg */}
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#133E87"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg> 
-                {/* delete svg */}
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FA4032"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                </Box>
+              <StyledTableCell >{row.EmployeeName}</StyledTableCell>
+              <StyledTableCell >{row.LeaveDate}</StyledTableCell>
+              <StyledTableCell >{row.Reason}</StyledTableCell>
+              <StyledTableCell >1</StyledTableCell>
+              <StyledTableCell>
+                <FormControl variant="standard" sx={{minWidth: 100 }}>
+                  <Select
+                    labelId="status-select-label"
+                    id="status-select"
+                    value={row.Status}
+                    onChange={(e) => handleStatusChange(row.LeaveId, e.target.value)}
+                  >
+                    <MenuItem value="Pending">Pending</MenuItem>
+                    <MenuItem value="Approved">Approved</MenuItem>
+                    <MenuItem value="Reject">Reject</MenuItem>
+                  </Select>
+                </FormControl>
               </StyledTableCell>
             </StyledTableRow>
           ))}
