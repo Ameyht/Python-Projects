@@ -54,3 +54,17 @@
    python3 manage.py runserver
    ```
 
+### EmployeeManagement :ReactJs (Frontend) :
+1. Install the dependencies :
+
+   ```bash
+   npm install
+   ```
+   
+2. Start the Project using following command :
+   
+
+   ```bash
+   npm start
+   ```
+
