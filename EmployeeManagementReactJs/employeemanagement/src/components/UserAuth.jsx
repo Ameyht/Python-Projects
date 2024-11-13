@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 
 import Registered from "./Registered";
 import Header from "./Header";
+import ApplyLeave from "./ApplyLeave";
 
 const UserAuth = () => {
   const myStyles = {
@@ -22,11 +23,12 @@ const UserAuth = () => {
     } else if (currentUrl === "/signup") {
       return <SignUp />;
     } 
-   
-     else if (currentUrl === "/registered") {
+    else if (currentUrl === "/registered") {
       return <Registered />;
     }
-
+    else if (currentUrl === "/applyleave") {
+      return <ApplyLeave />;
+    }
   };
 
   return (

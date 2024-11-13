@@ -8,17 +8,48 @@ import Employee from "../images/Employee.png";
 import workleave from "../images/workleave.png";
 import newJoinee from "../images/NewJoinee.svg";
 import smile from "../images/Smile.png";
-import UnderConstruction from "../images/UnderConstruction.png"
+import UnderConstruction from "../images/UnderConstruction.png";
+import axios from "axios";
+const BEARER_TOKEN = process.env.REACT_APP_BEARER_TOKEN;
 
 const DashBoardMain = () => {
-    const [employee, setEmployee] = useState(null);
-
-    const getUser = useUserStore((state) => state.getUser);
-    useEffect(() => {
-        const fetchedEmployee = getUser();
-        setEmployee(fetchedEmployee);
-        console.log("DashBoardMain :", fetchedEmployee);
-    }, [getUser]);
+  const [employee, setEmployee] = useState(null);
+  const [totalEmployees, setTotalEmployees] = useState([]);
+  const getUser = useUserStore((state) => state.getUser);
+  const totalEmployeeCount=totalEmployees.length;
+  const emp = totalEmployees.filter(emp => emp.Manager === employee?.EmployeeName);
+  const thisManager=emp.length;
+  
+  const fetchEmployees = async () => {
+    // debugger
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/dept/employee`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${BEARER_TOKEN}`,
+        },
+      });
+      
+      const employees = response.data;
+      setTotalEmployees(employees); 
+      console.log("Fetched totalEmployees data =>",response.data);
+    } catch (error) {
+      console.error("Error fetching employee data:", error);
+    }
+  };
+  
+  useEffect(() => {
+    const fetchedEmployee = getUser();
+    setEmployee(fetchedEmployee);
+    console.log("DashBoardMain:", fetchedEmployee);
+    fetchEmployees();
+  }, [getUser]);
+  
+  useEffect(() => {
+    if (totalEmployees !== null) {
+      console.log("Updated totalEmployees:", totalEmployees);
+    }
+  }, [totalEmployees]);
 
   return (
     <Box className="p-2 md:min-h-3 min-h-3 h-auto md:h-auto w-[100%] bg-gray-100 md:w-[84%] border border-gray-400">
@@ -47,7 +78,7 @@ const DashBoardMain = () => {
                 <img src={Employee} className="h-[4rem] w-[4rem]"/>
                 </Box>
                 <Typography>Total Employees</Typography>
-                <Typography variant='h6'><span className='font-bold'>200</span>/200</Typography>
+                <Typography variant='h6'><span className='font-bold'>{thisManager}</span>/{totalEmployeeCount}</Typography>
             </Box>
             
           </Paper>
@@ -57,7 +88,7 @@ const DashBoardMain = () => {
                 <img src={workleave} className="h-[2.5rem] w-[2.5rem]"/>
                 </Box>
                 <Typography>On Leaves</Typography>
-                <Typography variant="h6"><span className='font-bold'>12</span>/200</Typography>
+                <Typography variant="h6"><span className='font-bold'>12</span>/200</Typography> 
             </Box></Paper>
           <Paper elevation={3} sx={{borderRadius:4}}>
           <Box className="flex flex-col h-full items-start pl-2">
