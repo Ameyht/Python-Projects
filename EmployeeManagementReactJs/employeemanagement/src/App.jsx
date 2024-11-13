@@ -16,6 +16,7 @@ function App() {
         <Route path="/login" element={<UserAuth />} />
         <Route path="/dashboard" element={<DashBoardUI />} />
         <Route path="/signup" element={<UserAuth />} />
+        <Route path="/applyleave" element={<UserAuth />} />
         <Route path="/leave" element={<LeaveUI />} />
         <Route path="/project" element={<ProjectUI />} />
       </Routes>
